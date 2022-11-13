@@ -3,12 +3,11 @@ int sizeOfNew=3;
 // исходный массив
 string[] a= {"12","34","56789"};
 int la = a.Length;
-Console.WriteLine(la);
 
 int lb = Convert.ToInt32(Math.Pow(2,la)); 
-Console.WriteLine(lb);
 //массив двоичных чисел от 0 до 2^a.Length
 int[] bin = new int[lb];
+
 //массив сочетаний индексов элементов исходного массива,из которых формируется новый
 int[,] elementForPrint = new int[lb,la];
 //количество элементов в одном сочетании
@@ -41,8 +40,9 @@ void binGenerate(int l)
        bin[i] = DecimalToBin(i);
     }
 }
+
 binGenerate(lb);
-Console.WriteLine($"{string.Join(", ",bin)}");
+
 void GenerateForPrint()
 {
     for (int i=0; i<=lb-1; i++)
@@ -68,11 +68,44 @@ void GenerateForPrint()
 
 GenerateForPrint();
 
-for (int i=0; i<=lb-1; i++)
-    {
-        for (int j=0; j<la;j++)
-            Console.Write ($" {elementForPrint[i,j]}"); 
-        Console.Write ($", {numberOfElementsForPrint[i]}");    
-        Console.WriteLine();    
-    }
+string temp = String.Empty;
+string[] result = new string[sizeOfNew+1];
+for (int i=1; i<sizeOfNew+1; i++)
+    result[i] = String.Empty;
+int iresult = 0;
+int n = 1; 
 
+
+void PrintArray(int k,int m)
+{
+    if (elementForPrint[k,m] != 0)
+    {
+        int j=elementForPrint[k,m]-1;
+        for (int i=0; i<a[j].Length; i++)
+        {
+            temp = a[j];
+            iresult++;
+            result[iresult] = result[iresult-1] + temp[i];
+
+            if (m+1 <numberOfElementsForPrint[k])
+                PrintArray(k,m+1);
+            else 
+            {
+                n++;
+                Console.WriteLine($"{n}. [{result[iresult]}]"); 
+                iresult = iresult - 1;
+            }    
+        }
+        iresult = iresult-1;
+    } 
+} 
+ 
+Console.WriteLine($"{n}. []");   
+for (int i=1; i<=lb-1; i++)
+{
+    if (numberOfElementsForPrint[i]<=sizeOfNew)
+    {
+        iresult = 0;
+        PrintArray(i,0);
+    }
+}
