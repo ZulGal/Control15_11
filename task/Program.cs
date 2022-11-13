@@ -43,3 +43,36 @@ void binGenerate(int l)
 }
 binGenerate(lb);
 Console.WriteLine($"{string.Join(", ",bin)}");
+void GenerateForPrint()
+{
+    for (int i=0; i<=lb-1; i++)
+    {
+        int k=0;
+        for(int j=0; j<la; j++)
+            elementForPrint[i,j]=0;  //обнуление
+        int temp = bin[i];
+        int m =0;
+        while (temp != 0)
+        {
+            if (temp%10 != 0)
+            {
+                elementForPrint[i,m] = k+1;
+                m++;
+            }   
+            temp = temp / 10;
+            k++;
+        }
+        numberOfElementsForPrint[i] = m;
+    }
+}
+
+GenerateForPrint();
+
+for (int i=0; i<=lb-1; i++)
+    {
+        for (int j=0; j<la;j++)
+            Console.Write ($" {elementForPrint[i,j]}"); 
+        Console.Write ($", {numberOfElementsForPrint[i]}");    
+        Console.WriteLine();    
+    }
+
